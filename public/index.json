@@ -1,0 +1,120 @@
+[
+{
+	"uri": "//localhost:1313/",
+	"title": "Blue / Green Deployment Automation with Lambda and Step Functions",
+	"tags": [],
+	"description": "",
+	"content": "Content Introduction Networking configuration Create ALB Create database Deploy backend Deploy Frontend Create CICD Pipline Result test Clear resource "
+},
+{
+	"uri": "//localhost:1313/7-create_cicd_pipline/7.1-create_and_configure_slack/",
+	"title": "Create and Configure Slack Application",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "//localhost:1313/1-introduce/",
+	"title": "Introduction",
+	"tags": [],
+	"description": "",
+	"content": "Architecture "
+},
+{
+	"uri": "//localhost:1313/7-create_cicd_pipline/7.2-create_lambda/",
+	"title": "Create Lambda Functions",
+	"tags": [],
+	"description": "",
+	"content": "1\n"
+},
+{
+	"uri": "//localhost:1313/2-networking_configuration/",
+	"title": "Create VPC",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "//localhost:1313/3-create_applicationloadbalancer_and_targetgroup/",
+	"title": "Create Application Load Balancer",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "//localhost:1313/7-create_cicd_pipline/7.3-create_alarm/",
+	"title": "Create CloudWatch Alarm",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "//localhost:1313/7-create_cicd_pipline/7.4-create_step_functions/",
+	"title": "Create CICD Pipline by Step Functions",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "//localhost:1313/4-create_database/",
+	"title": "Create database",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "//localhost:1313/5-deploy_backend/",
+	"title": "Deploy Backend",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "//localhost:1313/7-create_cicd_pipline/7.5-create_codepipline/",
+	"title": "Create CodePipline",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "//localhost:1313/6-deploy_frontend/",
+	"title": "Deploy Frontend",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "//localhost:1313/7-create_cicd_pipline/",
+	"title": "Create CICD Pipline",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "//localhost:1313/8-result_test/",
+	"title": "Result_Test",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "//localhost:1313/9-clear_resource/",
+	"title": "Clear resource",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "//localhost:1313/categories/",
+	"title": "Categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "//localhost:1313/tags/",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]

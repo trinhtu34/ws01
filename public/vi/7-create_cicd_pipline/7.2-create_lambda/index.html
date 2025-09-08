@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="vi" class="js csstransforms3d">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.148.2">
+    <meta name="description" content="">
+<meta name="author" content="trinhngoctu007@gmail.com">
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Tạo Lambda Functions :: Triển khai theo Blue-Green với Lambda và Step Functions</title>
+
+    
+    <link href="/css/nucleus.css?1757005541" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1757005541" rel="stylesheet">
+    <link href="/css/hybrid.css?1757005541" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1757005541" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1757005541" rel="stylesheet">
+    <link href="/css/auto-complete.css?1757005541" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1757005541" rel="stylesheet">
+    <link href="/css/theme.css?1757005541" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1757005541" rel="stylesheet">
+    
+    <link href="/css/theme-workshop.css?1757005541" rel="stylesheet">
+    
+    
+
+    <script src="/js/jquery-3.3.1.min.js?1757005541"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/vi/7-create_cicd_pipline/7.2-create_lambda/">
+    <nav id="sidebar"
+  class="showVisitedLinks">
+
+  
+  
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/">
+
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="30%"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#f90;fill-rule:evenodd;}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09,10.85a4.7,4.7,0,0,0,.19,1.48,7.73,7.73,0,0,0,.54,1.19.77.77,0,0,1,.12.38.64.64,0,0,1-.32.49l-1,.7a.83.83,0,0,1-.44.15.69.69,0,0,1-.49-.23,3.8,3.8,0,0,1-.6-.77q-.25-.42-.51-1a6.14,6.14,0,0,1-4.89,2.3,4.54,4.54,0,0,1-3.32-1.19,4.27,4.27,0,0,1-1.22-3.2A4.28,4.28,0,0,1,3.61,7.75,6.06,6.06,0,0,1,7.69,6.46a12.47,12.47,0,0,1,1.76.13q.92.13,1.91.36V5.73a3.65,3.65,0,0,0-.79-2.66A3.81,3.81,0,0,0,7.86,2.3a7.71,7.71,0,0,0-1.79.22,12.78,12.78,0,0,0-1.79.57,4.55,4.55,0,0,1-.58.22l-.26,0q-.35,0-.35-.52V2a1.09,1.09,0,0,1,.12-.58,1.2,1.2,0,0,1,.47-.35A10.88,10.88,0,0,1,5.77.32,10.19,10.19,0,0,1,8.36,0a6,6,0,0,1,4.35,1.35,5.49,5.49,0,0,1,1.38,4.09ZM7.34,13.38a5.36,5.36,0,0,0,1.72-.31A3.63,3.63,0,0,0,10.63,12,2.62,2.62,0,0,0,11.19,11a5.63,5.63,0,0,0,.16-1.44v-.7a14.35,14.35,0,0,0-1.53-.28,12.37,12.37,0,0,0-1.56-.1,3.84,3.84,0,0,0-2.47.67A2.34,2.34,0,0,0,5,11a2.35,2.35,0,0,0,.61,1.76A2.4,2.4,0,0,0,7.34,13.38Zm13.35,1.8a1,1,0,0,1-.64-.16,1.3,1.3,0,0,1-.35-.65L15.81,1.51a3,3,0,0,1-.15-.67.36.36,0,0,1,.41-.41H17.7a1,1,0,0,1,.65.16,1.4,1.4,0,0,1,.33.65l2.79,11,2.59-11A1.17,1.17,0,0,1,24.39.6a1.1,1.1,0,0,1,.67-.16H26.4a1.1,1.1,0,0,1,.67.16,1.17,1.17,0,0,1,.32.65L30,12.39,32.88,1.25A1.39,1.39,0,0,1,33.22.6a1,1,0,0,1,.65-.16h1.54a.36.36,0,0,1,.41.41,1.36,1.36,0,0,1,0,.26,3.64,3.64,0,0,1-.12.41l-4,12.86a1.3,1.3,0,0,1-.35.65,1,1,0,0,1-.64.16H29.25a1,1,0,0,1-.67-.17,1.26,1.26,0,0,1-.32-.67L25.67,3.64,23.11,14.34a1.26,1.26,0,0,1-.32.67,1,1,0,0,1-.67.17Zm21.36.44a11.28,11.28,0,0,1-2.56-.29,7.44,7.44,0,0,1-1.92-.67,1,1,0,0,1-.61-.93v-.84q0-.52.38-.52a.9.9,0,0,1,.31.06l.42.17a8.77,8.77,0,0,0,1.83.58,9.78,9.78,0,0,0,2,.2,4.48,4.48,0,0,0,2.43-.55,1.76,1.76,0,0,0,.86-1.57,1.61,1.61,0,0,0-.45-1.16A4.29,4.29,0,0,0,43,9.22l-2.41-.76A5.15,5.15,0,0,1,38,6.78a3.94,3.94,0,0,1-.83-2.41,3.7,3.7,0,0,1,.45-1.85,4.47,4.47,0,0,1,1.19-1.37A5.27,5.27,0,0,1,40.51.29,7.4,7.4,0,0,1,42.6,0a8.87,8.87,0,0,1,1.12.07q.57.07,1.08.19t.95.26a4.27,4.27,0,0,1,.7.29,1.59,1.59,0,0,1,.49.41.94.94,0,0,1,.15.55v.79q0,.52-.38.52a1.76,1.76,0,0,1-.64-.2,7.74,7.74,0,0,0-3.2-.64,4.37,4.37,0,0,0-2.21.47,1.6,1.6,0,0,0-.79,1.48,1.58,1.58,0,0,0,.49,1.18,4.94,4.94,0,0,0,1.83.92L44.55,7a5.08,5.08,0,0,1,2.57,1.6A3.76,3.76,0,0,1,47.9,11a4.21,4.21,0,0,1-.44,1.93,4.4,4.4,0,0,1-1.21,1.47,5.43,5.43,0,0,1-1.85.93A8.25,8.25,0,0,1,42.05,15.62Z"></path><path class="cls-2" d="M45.19,23.81C39.72,27.85,31.78,30,25,30A36.64,36.64,0,0,1,.22,20.57c-.51-.46-.06-1.09.56-.74A49.78,49.78,0,0,0,25.53,26.4,49.23,49.23,0,0,0,44.4,22.53C45.32,22.14,46.1,23.14,45.19,23.81Z"></path><path class="cls-2" d="M47.47,21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74,3.13-2.2,8.27-1.57,8.86-.83s-.16,5.89-3.09,8.35c-.45.38-.88.18-.68-.32C46.69,25.8,48.17,22.11,47.47,21.21Z"></path></svg>
+
+</a>
+
+    </div>
+    
+    <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search"
+        placeholder="Search...">
+    <span data-search-clear><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1757005541"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1757005541"></script>
+<script type="text/javascript">
+    
+        var baseurl = "\/\/localhost:1313\/\/vi";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1757005541"></script>
+
+
+
+    
+  </div>
+
+  <div class="highlightable">
+    <ul class="topics">
+
+      
+      
+      
+
+
+
+
+
+
+
+<li data-nav-id="/vi/1-introduce/" title="Giới thiệu" class="dd-item 
+        
+        
+        
+        ">
+  <a href="/vi/1-introduce/">
+     <b> 1. </b> Giới thiệu
+    
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+  
+  
+</li>
+
+
+
+      
+      
+
+
+
+
+
+
+
+<li data-nav-id="/vi/2-networking_configuration/" title="Cấu hình Networking" class="dd-item 
+        
+        
+        
+        ">
+  <a href="/vi/2-networking_configuration/">
+     <b> 2. </b> Cấu hình Networking
+    
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+  
+  
+</li>
+
+
+
+      
+      
+
+
+
+
+
+
+
+<li data-nav-id="/vi/3-create_applicationloadbalancer_and_targetgroup/" title="Tạo Load Balancer" class="dd-item 
+        
+        
+        
+        ">
+  <a href="/vi/3-create_applicationloadbalancer_and_targetgroup/">
+     <b> 3. </b> Tạo Load Balancer
+    
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+  
+  
+</li>
+
+
+
+      
+      
+
+
+
+
+
+
+
+<li data-nav-id="/vi/4-create_database/" title="Tạo cơ sở dữ liệu" class="dd-item 
+        
+        
+        
+        ">
+  <a href="/vi/4-create_database/">
+     <b> 4. </b> Tạo cơ sở dữ liệu
+    
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+  
+  
+</li>
+
+
+
+      
+      
+
+
+
+
+
+
+
+<li data-nav-id="/vi/5-deploy_backend/" title="Triển khai Backend" class="dd-item 
+        
+        
+        
+        ">
+  <a href="/vi/5-deploy_backend/">
+     <b> 5. </b> Triển khai Backend
+    
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+  
+  
+</li>
+
+
+
+      
+      
+
+
+
+
+
+
+
+<li data-nav-id="/vi/6-deploy_frontend/" title="Triển khai Frontend" class="dd-item 
+        
+        
+        
+        ">
+  <a href="/vi/6-deploy_frontend/">
+     <b> 6. </b> Triển khai Frontend
+    
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+  
+  
+</li>
+
+
+
+      
+      
+
+
+
+
+
+
+
+<li data-nav-id="/vi/7-create_cicd_pipline/" title="Tạo CICD Pipline" class="dd-item 
+        parent
+        
+        
+        ">
+  <a href="/vi/7-create_cicd_pipline/">
+     <b> 7 </b> Tạo CICD Pipline
+    
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+  
+  
+  <ul>
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+
+
+
+
+
+
+
+<li data-nav-id="/vi/7-create_cicd_pipline/7.1-create_and_configure_slack/" title="Tạo và cấu hình Slack App" class="dd-item 
+        
+        
+        
+        ">
+  <a href="/vi/7-create_cicd_pipline/7.1-create_and_configure_slack/">
+     <b> 7.1 </b> Tạo và cấu hình Slack App
+    
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+  
+  
+</li>
+
+
+
+    
+    
+    
+    
+
+
+
+
+
+
+
+<li data-nav-id="/vi/7-create_cicd_pipline/7.2-create_lambda/" title="Tạo Lambda Functions" class="dd-item 
+        
+        active
+        
+        ">
+  <a href="/vi/7-create_cicd_pipline/7.2-create_lambda/">
+     <b> 7.2 </b> Tạo Lambda Functions
+    
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+  
+  
+</li>
+
+
+
+    
+    
+    
+    
+
+
+
+
+
+
+
+<li data-nav-id="/vi/7-create_cicd_pipline/7.3-create_alarm/" title="Tạo CloudWatch Alarm" class="dd-item 
+        
+        
+        
+        ">
+  <a href="/vi/7-create_cicd_pipline/7.3-create_alarm/">
+     <b> 7.3 </b> Tạo CloudWatch Alarm
+    
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+  
+  
+</li>
+
+
+
+    
+    
+    
+    
+
+
+
+
+
+
+
+<li data-nav-id="/vi/7-create_cicd_pipline/7.4-create_step_functions/" title="Tạo CICD Pipline bằng Step Functions" class="dd-item 
+        
+        
+        
+        ">
+  <a href="/vi/7-create_cicd_pipline/7.4-create_step_functions/">
+     <b> 7.4 </b> Tạo CICD Pipline bằng Step Functions
+    
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+  
+  
+</li>
+
+
+
+    
+    
+    
+    
+
+
+
+
+
+
+
+<li data-nav-id="/vi/7-create_cicd_pipline/7.5-create_codepipline/" title="Tạo CodePipline" class="dd-item 
+        
+        
+        
+        ">
+  <a href="/vi/7-create_cicd_pipline/7.5-create_codepipline/">
+     <b> 7.5 </b> Tạo CodePipline
+    
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+  
+  
+</li>
+
+
+
+    
+    
+    
+  </ul>
+  
+</li>
+
+
+
+      
+      
+
+
+
+
+
+
+
+<li data-nav-id="/vi/8-result_test/" title="Kiểm tra kết quả" class="dd-item 
+        
+        
+        
+        ">
+  <a href="/vi/8-result_test/">
+     <b> 8. </b> Kiểm tra kết quả
+    
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+  
+  
+</li>
+
+
+
+      
+      
+
+
+
+
+
+
+
+<li data-nav-id="/vi/9-clear_resource/" title="Dọn dẹp tài nguyên" class="dd-item 
+        
+        
+        
+        ">
+  <a href="/vi/9-clear_resource/">
+     <b> 9. </b> Dọn dẹp tài nguyên
+    
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+  
+  
+</li>
+
+
+
+      
+      
+    </ul>
+
+    
+    
+    <section id="shortcuts">
+      <h3>More</h3>
+      <ul>
+        
+        <li>
+          <a class="padding" href="https://www.facebook.com/groups/awsstudygroupfcj/"><i class='fab fa-facebook'></i> AWS Study Group</a>
+        </li>
+        
+      </ul>
+    </section>
+    
+
+    
+    <section id="prefooter">
+      <hr />
+      <ul>
+        
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+            <div class="select-style">
+              <select id="select-language" onchange="location = this.value;">
+                
+                
+                
+                
+                
+                
+                
+                
+                <option id="en"
+                  value="//localhost:1313/7-create_cicd_pipline/7.2-create_lambda/">English</option>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <option id="vi"
+                  value="//localhost:1313/vi/7-create_cicd_pipline/7.2-create_lambda/" selected>Tiếng Việt</option>
+                
+                
+                
+                
+              </select>
+              <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="255px" height="255px" viewBox="0 0 255 255"
+                style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                <g>
+                  <g id="arrow-drop-down">
+                    <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+                  </g>
+                </g>
+              </svg>
+            </div>
+          </a>
+        </li>
+        
+
+        
+        <li><a class="padding" href="#" data-clear-history-toggle><i
+              class="fas fa-history fa-fw"></i> Clear History</a></li>
+        
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <left>
+    
+     <b> Workshop</b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7920860&style=0038&nbdigits=9&type=page&initCount=0" title="Migrate" Alt="web counter"   border="0" /></a>  <br>
+     <b> <a href="https://cloudjourney.awsstudygroup.com/">Cloud Journey</a></b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7830807&style=0038&nbdigits=9&type=page&initCount=0" title="Total CLoud Journey" Alt="web counter"   border="0"   />
+     
+</left>
+<left>
+    <br>
+    <br>
+        <b> Last Updated </b> <br>
+        <i><font color=orange>02-09-2025</font></i>
+    </left>
+    <left>
+        <br>
+        <br>
+            <b> Team </b> <br>
+           
+            <i> <a href="https://www.linkedin.com/in/tutrinhngoc/"  style="color:orange">Tú Trịnh  </a> <br>
+               
+        </i>
+        </left>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/vi/'>Triển khai hệ thống CICD Blue / Green Deployment tự động với Lamba và Step Functions</a> > <a href='/vi/7-create_cicd_pipline/'>Tạo CICD Pipline</a> > Tạo Lambda Functions
+          
+        
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#tạo-các-lambda-functions">Tạo các lambda functions</a></li>
+    <li><a href="#cấu-hình-env-cho-một-số-functions">Cấu hình env cho một số functions</a></li>
+    <li><a href="#cấu-hình-permissions-cho-lambda-functions">Cấu hình Permissions cho Lambda functions</a></li>
+    <li><a href="#cấu-hình-api-gateway-cho-lambda-có-nhiệm-vụ-gửi-approval-request-tới-slack">Cấu hình API Gateway cho lambda có nhiệm vụ gửi approval request tới Slack</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Tạo Lambda Functions
+            </h1>
+          
+
+        
+
+
+
+	<p><strong>Nơi lưu trữ source code của các lambda function thực hiện việc CI/CD : vào project tên là LuanVanTotNghiep , sau đó vào <code>.aws</code> , tiếp tục vào <strong>CICD using step functions</strong> , tiếp tục vào <strong>lambda functions</strong></strong></p>
+<h2 id="tạo-các-lambda-functions">Tạo các lambda functions</h2>
+<p>Vào giao diện Console của AWS</p>
+<ul>
+<li>
+<p>Nhập vào thanh tìm kiếm <code>lambda</code> , chọn vào dịch vụ Lambda
+<img src="/images/7-cicd/7.2-lambda/create-lambda/search-lambda.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Ấn vào mục <strong>Dashboard</strong> hoặc <strong>Functions</strong> đều được , và sau đó chọn <strong>Create function</strong>
+<img src="/images/7-cicd/7.2-lambda/create-lambda/choose-create-lambda-function.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Nhập functions name <code>ws-parse-artifact-from-CodeBuild</code>, chọn Runtime như trong hình , và cuối cùng chọn <strong>Create function</strong>
+<img src="/images/7-cicd/7.2-lambda/create-lambda/enter-name-runtime-and-click-create-function.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Sau khi chờ thời gian tạo function , bạn sẽ được chuyển vào trong function bạn vừa tạo , nếu như bị ra ngoài thì bạn chỉ cần ấn vào mục <strong>Functions</strong> &ndash;&gt; Hiển thị danh sách functions bạn có &ndash;&gt; Ấn vào funtion bạn vừa tạo là được
+<img src="/images/7-cicd/7.2-lambda/create-lambda/create-lambda-function-successfully.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Vào file có tên <strong>parse-artifact-from-codebuild</strong> trong nơi lưu trữ ( Tôi đã Note ở trên đầu ) , và copy nội dung của toàn bộ file vào phần Code của Lambda . Sau khi copy code bạn nhớ phải <strong>ấn vào <strong>Deploy</strong></strong> để code có thể lưu thay đổi .<br>
+<img src="/images/7-cicd/7.2-lambda/create-lambda/copy-code-and-click-deploy.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Làm tương tự để tạo ra các function khác , tên lần lượt như sau :</p>
+<ul>
+<li><code>ws-register-new-task-definition</code></li>
+<li><code>ws-scale-out-ecs-service</code></li>
+<li><code>ws-check-blue-green</code></li>
+<li><code>ws-poll-target-health</code></li>
+<li><code>ws-canary-switch-traffic</code></li>
+<li><code>ws-scale-in-ecs-service</code></li>
+<li><code>ws-request-to-slack-for-manual-approval</code></li>
+<li><code>ws-response-approval-information-from-slack</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="cấu-hình-env-cho-một-số-functions">Cấu hình env cho một số functions</h2>
+<p>Để truy cập vào nơi cấu hình Environment Variable của Lambda , bạn chọn một Lambda cần cấu hình , sau đó chọn vào mục <strong>Configuraion</strong> và ấn xuống mục <strong>Environment Variable</strong></p>
+<p><strong>Cấu hình cho file : <code>ws-parse-artifact-from-CodeBuild</code></strong> ECS_CLUSTER , LISTENER_ARN
+<img src="/images/7-cicd/7.2-lambda/configure-env/configure-env-of-lambda.png" alt="enter email again"></p>
+<p><strong>Cấu hình cho file : <code>ws-request-to-slack-for-manual-approval</code></strong> SLACK_BOT_TOKEN , SLACK_CHANNEL_ID
+<img src="/images/7-cicd/7.2-lambda/configure-env/.png" alt="enter email again"></p>
+<ul>
+<li>Tại đây bạn nhập vào <strong>Bot User OAuth Token</strong> vào SLACK_BOT_TOKEN và <strong>CHANNEL ID</strong> vào SLACK_CHANNEL_ID bạn vừa Copy tại Chương 7.1
+<img src="/images/7-cicd/7.2-lambda/configure-env/.png" alt="enter email again"></li>
+</ul>
+<h2 id="cấu-hình-permissions-cho-lambda-functions">Cấu hình Permissions cho Lambda functions</h2>
+<p><strong>Lý do : Bởi vì một số functions sẽ thực hiện một số thao tác trên các service khác , nên chúng ta cần cấp quyền để Lambda functions có thể thực hiện hành động . Đây là lý do chính khiến cho việc khi CICD Pipline hoạt động bị báo lỗi 403</strong></p>
+<p>Để cấu hình Permission cho từng lambda bạn làm theo như sau :</p>
+<ol>
+<li>
+<p>Trong giao diện của 1 lambda , bạn ấn vào mục <strong>Configuration</strong> , ngay ở dưới có mục <strong>Permissions</strong>
+<img src="/images/7-cicd/7.2-lambda/configure-permission/configure-permission-1.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Sau đó , bạn ấn vào <strong>Role name</strong> , bạn sẽ được chuyển qua dịch vụ IAM để cấu hình Permission cho lambda hiện tại .
+<img src="/images/7-cicd/7.2-lambda/configure-permission/configure-permission-2.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Tiếp theo , bạn ấn vào mục <strong>Add Permissions</strong> và chọn vào <strong>Create inline policy</strong> . Nếu bạn muốn attach policy có sẵn của AWS như các Permission FullAccess,&hellip; thì chọn <strong>Attach policy</strong> , sau đó nhập tên policy ví dụ như <strong>AWSStepFunctionsFullAccess</strong> và ấn vào rồi ấn vào <strong>Add Permissions</strong> ở góc dưới bên phải là được .</p>
+</li>
+</ol>
+<p><img src="/images/7-cicd/7.2-lambda/configure-permission/click-create-inline-policy.png" alt="enter email again">
+<img src="/images/7-cicd/7.2-lambda/configure-permission/click-add-permission.png" alt="enter email again">
+<img src="/images/7-cicd/7.2-lambda/configure-permission/example-attach-full-access-policy.png" alt="enter email again"></p>
+<ol start="4">
+<li>
+<p>Tiếp tục , chọn mục JSON để hiển thị policy editor
+<img src="/images/7-cicd/7.2-lambda/configure-permission/click-JSON.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Sau đó , bạn copy Inline policy tương ứng với từng file ở dưới và dán vào Policy editor , sau đó bạn ấn <strong>Next</strong> ở cuối góc phải màn hình
+<img src="/images/7-cicd/7.2-lambda/configure-permission/enter-policy-into-policy-editor.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Tiếp theo , bạn nhập vào <strong>Policy name</strong> ví dụ như <code>policy-for-create-new-task-definition</code> và ấn <strong>Create policy</strong>
+<img src="/images/7-cicd/7.2-lambda/configure-permission/enter-policy-name.png" alt="enter email again"></p>
+</li>
+</ol>
+<p>Vì để cho nhanh thì ở đây tôi sử dụng một số Role là FullAccess , trong thực tế thì lambda thực hiện hành động gì thì chỉ cấp đúng hành động đó cho Role . Và lưu ý <strong>nhớ thay <!-- raw HTML omitted --> trong role của tôi thành tài khoản của bạn nhé</strong> .</p>
+<p>Để lấy account id , nó nằm ở phần góc trên bên phải của màn hình
+<img src="/images/7-cicd/7.2-lambda/configure-permission/account-id-position.png" alt="enter email again"></p>
+<p><strong>Cấu hình cho file : <code>ws-register-new-task-definition</code></strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Statement&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ecs:DescribeTaskDefinition&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ecs:RegisterTaskDefinition&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;iam:PassRole&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;arn:aws:iam::&lt;your-account-id&gt;:role/task-role-luan-van&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;arn:aws:iam::&lt;your-account-di&gt;:role/ecsTaskExecutionRole&#34;</span>
+</span></span><span style="display:flex;"><span>            ]
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Cấu hình cho file : <code>ws-scale-out-ecs-service</code></strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Statement&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ecs:DescribeServices&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ecs:UpdateService&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:ecs:ap-southeast-1:730335485777:service/*&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;iam:PassRole&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:iam::730335485777:role/ecsTaskExecutionRole&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;iam:PassRole&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:iam::730335485777:role/task-role-luan-van&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Cấu hình cho file : <code>ws-check-blue-green</code></strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Statement&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;Statement1&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;elasticloadbalancing:DescribeListeners&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;iam:PassRole&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:iam::730335485777:role/ecsTaskExecutionRole&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Cấu hình cho file : <code>ws-poll-target-health</code></strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Statement&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;Statement1&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;elasticloadbalancing:DescribeTargetHealth&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;iam:PassRole&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:iam::730335485777:role/ecsTaskExecutionRole&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Cấu hình cho file : <code>ws-canary-switch-traffic</code></strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Statement&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Sid&#34;</span>: <span style="color:#e6db74">&#34;Statement1&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;elasticloadbalancing:ModifyListener&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;elasticloadbalancing:DescribeListeners&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;iam:PassRole&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:iam::730335485777:role/ecsTaskExecutionRole&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Cấu hình cho file : <code>ws-scale-in-ecs-service</code></strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Statement&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ecs:DescribeServices&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ecs:UpdateService&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:ecs:ap-southeast-1:730335485777:service/*&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;iam:PassRole&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:iam::730335485777:role/ecsTaskExecutionRole&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: <span style="color:#e6db74">&#34;iam:PassRole&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:iam::730335485777:role/task-role-luan-van&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Cấu hình cho file : <code>ws-response-approval-information-from-slack</code></strong> : ở đây tôi dùng policy là AWSStepFunctionsFullAccess . Xem các add Attach policies này ở phần mục số 3</p>
+<h2 id="cấu-hình-api-gateway-cho-lambda-có-nhiệm-vụ-gửi-approval-request-tới-slack">Cấu hình API Gateway cho lambda có nhiệm vụ gửi approval request tới Slack</h2>
+<p>Vào giao diện Console của AWS , gõ vào thanh tìm kiếm
+<img src="/images/7-cicd/7.2-lambda/configure-apigw-for-resposne/search-api-gateway.png" alt="enter email again"></p>
+<ul>
+<li>
+<p>Chọn vào <strong>Create API</strong>
+<img src="/images/7-cicd/7.2-lambda/configure-apigw-for-resposne/click-create-api.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Ấn vào <strong>Build</strong> tại <strong>REST API</strong>
+<img src="/images/7-cicd/7.2-lambda/configure-apigw-for-resposne/click-build-rest-api.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Nhập vào <strong>API Name</strong> và sau đó Chọn <strong>Create API</strong>
+<img src="/images/7-cicd/7.2-lambda/configure-apigw-for-resposne/enter-name-api-and-click-create-api.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Chọn vào <strong>Create resource</strong>
+<img src="/images/7-cicd/7.2-lambda/configure-apigw-for-resposne/click-create-resource.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Nhập vào <strong>Resource name</strong> là <code>interact</code> và sau đó ấn <strong>Create resource</strong>
+<img src="/images/7-cicd/7.2-lambda/configure-apigw-for-resposne/enter-resource-name-and-click-create-resource.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Sau khi tạo thành công , ấn vào tên resource vừa tạo và ấn vào <strong>Create method</strong>
+<img src="/images/7-cicd/7.2-lambda/configure-apigw-for-resposne/create-method.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Chọn <strong>Method type</strong> là : <strong>POST</strong> , chọn <strong>Integration type</strong> là : <strong>Lambda function</strong> , bật <strong>Lambda proxy interation</strong> . Tại phần <strong>Lambda function</strong> thì bạn cần nhập <strong>Function ARN</strong> của lambda <strong>ws-response-approval-information-from-slack</strong> .
+<img src="/images/7-cicd/7.2-lambda/configure-apigw-for-resposne/copy-lambda-arn.png" alt="enter email again">
+<img src="/images/7-cicd/7.2-lambda/configure-apigw-for-resposne/create-method-api-gw.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Cuối cùng click <strong>Create method</strong>
+<img src="/images/7-cicd/7.2-lambda/configure-apigw-for-resposne/click-create-method.png" alt="enter email again"></p>
+</li>
+</ul>
+<p><strong>Lưu ý : phải chọn <strong>Lambda proxy integration</strong> , nếu không thì Slack sẽ không gửi dữ liệu về được vì bị mất body</strong></p>
+<ul>
+<li>
+<p>Để hiện thực toàn bộ thay đổi , bạn cần ấn <strong>Deploy API</strong>
+<img src="/images/7-cicd/7.2-lambda/configure-apigw-for-resposne/click-deploy-api.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Tại mục <strong>Stage</strong> chọn <strong>New stage</strong> . <strong>Stage name</strong> bạn nhập vào <code>prod</code> . Cuối cùng ấn nút <strong>Deploy</strong>
+<img src="/images/7-cicd/7.2-lambda/configure-apigw-for-resposne/deploy-api.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Sau đây là giao diện khi bạn Deploy API thành công , bạn sẽ có 1 API URL là <strong>Invoke URL</strong> , để sử dụng được API này bạn cần phải thêm vào <strong>Resource name</strong> ở cuối <strong>Invoke URL</strong> như sau : <a href="https://c0gmxh88u8.execute-api.ap-southeast-1.amazonaws.com/prod/interact">https://c0gmxh88u8.execute-api.ap-southeast-1.amazonaws.com/prod/interact</a>
+<img src="/images/7-cicd/7.2-lambda/configure-apigw-for-resposne/create-stage-and-deploy-api-successfully.png" alt="enter email again"></p>
+</li>
+</ul>
+<h4 id="tiếp-tục-cấu-hình-slack">Tiếp tục cấu hình Slack</h4>
+<ul>
+<li>
+<p>Nếu bạn đã thoát trang cấu hình cho Slack thì bạn vào link này : <a href="https://api.slack.com/apps">https://api.slack.com/apps</a></p>
+</li>
+<li>
+<p>Bạn chọn AppName theo đúng Workspace bạn vừa tạo
+<img src="/images/7-cicd/7.2-lambda/configure-apigw-for-resposne/choose-app-by-workspace.png" alt="enter email again"></p>
+</li>
+<li>
+<p>Tiếp theo , bạn vào mục <strong>Interactivity &amp; Shortcuts</strong> và nhập API URL vào <strong>Request URL</strong> . Cuối cùng là ấn <strong>Save changes</strong> ở góc phải màn hình
+<img src="/images/7-cicd/7.2-lambda/configure-apigw-for-resposne/enter-api-url-on-request-url-on-interactivity.png" alt="enter email again"></p>
+</li>
+</ul>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/vi/7-create_cicd_pipline/7.1-create_and_configure_slack/" title="Tạo và cấu hình Slack App"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/vi/7-create_cicd_pipline/7.3-create_alarm/" title="Tạo CloudWatch Alarm" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1757005541"></script>
+    <script src="/js/perfect-scrollbar.min.js?1757005541"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1757005541"></script>
+    <script src="/js/jquery.sticky.js?1757005541"></script>
+    <script src="/js/featherlight.min.js?1757005541"></script>
+    <script src="/js/highlight.pack.js?1757005541"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1757005541"></script>
+    <script src="/js/learn.js?1757005541"></script>
+    <script src="/js/hugo-learn.js?1757005541"></script>
+
+    <link href="/mermaid/mermaid.css?1757005541" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1757005541"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-158079754-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>
